@@ -1,19 +1,17 @@
 package com.kwchaiwat.dev.springbootkotlin.datasource.mock
 
-import com.kwchaiwat.dev.springbootkotlin.datasource.BankDataSource
-import io.mockk.mockk
+import com.kwchaiwat.dev.springbootkotlin.datasource.BankDatasource
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-internal class MockBankDataSourceTest {
+internal class MockBankDatasourceTest {
 
-    private val mockDataSource : BankDataSource = MockBankDataSource()
+    private val mockDatasource : BankDatasource = MockBankDatasource()
 
     @Test
     fun `should provide a collection of banks` () {
         // when
-        val banks = mockDataSource.retrieveBanks()
+        val banks = mockDatasource.retrieveBanks()
 
         // then
         assertThat(banks).isNotEmpty
@@ -22,7 +20,7 @@ internal class MockBankDataSourceTest {
     @Test
     fun `should provide some mock data`(){
         // when
-        val banks = mockDataSource.retrieveBanks()
+        val banks = mockDatasource.retrieveBanks()
 
         // then
         assertThat(banks).allMatch {
