@@ -33,7 +33,7 @@ internal class BankControllerTest  @Autowired constructor(
                 .andExpect {
                     status {isOk()}
                     content { contentType(APPLICATION_JSON)}
-                    jsonPath("$[0].accountNumber") { value("32132") }
+                    jsonPath("$[0].account_number") { value("AA-12311") }
                 }
         }
     }
@@ -45,7 +45,7 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should return the bank with the given account number`() {
             // given
-            val accountNumber =  323114
+            val accountNumber =  "AB-56563"
 
             // when/ Then
             mockMvc.get("$baseUrl/$accountNumber")
@@ -53,8 +53,8 @@ internal class BankControllerTest  @Autowired constructor(
                 .andExpect {
                     status {isOk()}
                     content { contentType(APPLICATION_JSON)}
-                    jsonPath("$.trust") { value(1.22) }
-                    jsonPath("$.transactionFee") { value(232) }
+                    jsonPath("$.trust") { value(321.32) }
+                    jsonPath("$.transaction_fee") { value(40) }
                 }
 
         }
@@ -108,7 +108,7 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should return BAD REQUEST if bank with given account number already exists`() {
             // given
-            val invalidbank = Bank("32132", 3.14, 11)
+            val invalidbank = Bank("AA-12311", 1922.33, 30)
 
             // when
             val performPost = mockMvc.post(baseUrl){
@@ -131,7 +131,7 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should update an existing bank`() {
             // given
-            val updatedBank = Bank("321", 1.0, 1)
+            val updatedBank = Bank("AC-91923", 1.0, 1)
             // when
             val performPatchRequest = mockMvc.patch(baseUrl){
                 contentType = APPLICATION_JSON
@@ -180,7 +180,7 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should delete the bank with the given account number`() {
             // given
-            val accountNumber = 321
+            val accountNumber = "AD-10292"
 
             // when/ then
             mockMvc.delete("$baseUrl/$accountNumber")

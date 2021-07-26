@@ -23,7 +23,7 @@ class BankController(private val service: BankService) {
     fun getBanks(): Collection<Bank> = service.getBanks()
 
     @GetMapping("/{accountNumber}")
-    fun getBank(@PathVariable accountNumber: String) = service.getBank(accountNumber)
+    fun getBank(@PathVariable accountNumber: String): Bank = service.getBank(accountNumber)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
