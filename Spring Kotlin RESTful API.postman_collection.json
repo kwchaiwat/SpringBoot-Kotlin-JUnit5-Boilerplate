@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "2a471c3c-c466-44d8-8d5f-f2fc4f7fea9b",
+		"name": "Spring Kotlin RESTful API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "banks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SpringUrl}}/api/banks",
+					"host": [
+						"{{SpringUrl}}"
+					],
+					"path": [
+						"api",
+						"banks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "banks",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account_number\": \"AA-123211\",\n    \"trust\": 1922.33,\n    \"transaction_fee\": 30\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SpringUrl}}/api/banks",
+					"host": [
+						"{{SpringUrl}}"
+					],
+					"path": [
+						"api",
+						"banks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "a bank",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account_number\": \"AA-123211\",\n    \"trust\": 333333,\n    \"transaction_fee\": 333\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SpringUrl}}/api/banks",
+					"host": [
+						"{{SpringUrl}}"
+					],
+					"path": [
+						"api",
+						"banks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "a bank",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SpringUrl}}/api/banks/AA-123211",
+					"host": [
+						"{{SpringUrl}}"
+					],
+					"path": [
+						"api",
+						"banks",
+						"AA-123211"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "a bank",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{SpringUrl}}/api/banks/AA-123211",
+					"host": [
+						"{{SpringUrl}}"
+					],
+					"path": [
+						"api",
+						"banks",
+						"AA-123211"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
