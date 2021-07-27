@@ -1,15 +1,14 @@
-package com.kwchaiwat.dev.springbootkotlin.datasource.network
+package com.kwchaiwat.dev.springbootkotlin.repository.impl
 
-import com.kwchaiwat.dev.springbootkotlin.datasource.BankDatasource
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
-import com.kwchaiwat.dev.springbootkotlin.repository.BankRepository
+import com.kwchaiwat.dev.springbootkotlin.model.BankRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
-@Repository("network")
-class NetworkBankDatasource(
+@Repository("bank")
+class BankRepositoryImpl(
     @Autowired private val bankRepository: BankRepository
-): BankDatasource {
+): com.kwchaiwat.dev.springbootkotlin.repository.Repositories {
     val banks: MutableList<Bank> = bankRepository.findAll()
 
     override fun retrieveBanks(): Collection<Bank> = banks

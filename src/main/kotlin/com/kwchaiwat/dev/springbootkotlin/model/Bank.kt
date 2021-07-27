@@ -1,7 +1,10 @@
 package com.kwchaiwat.dev.springbootkotlin.model
 
+import org.springframework.data.jpa.repository.JpaRepository
 import java.io.Serializable
 import javax.persistence.*
+
+interface BankRepository: JpaRepository<Bank, Long>
 
 @Table(name = "banks")
 @Entity

@@ -1,15 +1,15 @@
-package com.kwchaiwat.dev.springbootkotlin.datasource.mock
+package com.kwchaiwat.dev.springbootkotlin.repository
 
-import com.kwchaiwat.dev.springbootkotlin.datasource.BankDatasource
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
-import com.kwchaiwat.dev.springbootkotlin.repository.BankRepository
+import com.kwchaiwat.dev.springbootkotlin.model.BankRepository
+import com.kwchaiwat.dev.springbootkotlin.repository.Repositories
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository("mock")
-class MockBankDatasource(
+class MockBankRepositoryImpl(
     @Autowired private val bankRepository: BankRepository
-) : BankDatasource{
+) : Repositories {
     val banks: MutableList<Bank> = bankRepository.findAll()
 
     override fun retrieveBanks(): Collection<Bank> = banks

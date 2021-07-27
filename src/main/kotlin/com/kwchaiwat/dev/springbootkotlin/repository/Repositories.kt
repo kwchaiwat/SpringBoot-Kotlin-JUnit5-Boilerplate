@@ -1,8 +1,8 @@
-package com.kwchaiwat.dev.springbootkotlin.datasource
+package com.kwchaiwat.dev.springbootkotlin.repository
 
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
 
-interface BankDatasource {
+interface Repositories {
     fun retrieveBanks(): Collection<Bank>
     fun retrieveBank(accountNumber: String): Bank
     fun createBank(bank: Bank): Bank
