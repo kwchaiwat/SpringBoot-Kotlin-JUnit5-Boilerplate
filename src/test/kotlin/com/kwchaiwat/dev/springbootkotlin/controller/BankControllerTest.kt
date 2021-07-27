@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.*
 internal class BankControllerTest  @Autowired constructor(
     val mockMvc: MockMvc,
     val objectMapper: ObjectMapper
+
 ) {
     val baseUrl = "/api/banks"
 
@@ -33,7 +34,7 @@ internal class BankControllerTest  @Autowired constructor(
                 .andExpect {
                     status {isOk()}
                     content { contentType(APPLICATION_JSON)}
-                    jsonPath("$[0].account_number") { value("AA-12311") }
+                    jsonPath("$[0].accountNumber") { value("AA-12311") }
                 }
         }
     }
@@ -54,7 +55,7 @@ internal class BankControllerTest  @Autowired constructor(
                     status {isOk()}
                     content { contentType(APPLICATION_JSON)}
                     jsonPath("$.trust") { value(321.32) }
-                    jsonPath("$.transaction_fee") { value(40) }
+                    jsonPath("$.transactionFee") { value(40) }
                 }
 
         }
@@ -81,7 +82,11 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should add the new bank`() {
             // given
-            val newBank = Bank("acc123", 31.415, 2)
+            val newBank = Bank().apply {
+                this.accountNumber = "acc123"
+                this.trust = 31.415
+                this.transactionFee = 2
+            }
 
             // when
             val performPost = mockMvc.post(baseUrl){
@@ -108,7 +113,11 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should return BAD REQUEST if bank with given account number already exists`() {
             // given
-            val invalidbank = Bank("AA-12311", 1922.33, 30)
+            val invalidbank = Bank().apply {
+                this.accountNumber = "AA-12311"
+                this.trust = 1922.33
+                this.transactionFee = 30
+            }
 
             // when
             val performPost = mockMvc.post(baseUrl){
@@ -131,7 +140,11 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should update an existing bank`() {
             // given
-            val updatedBank = Bank("AC-91923", 1.0, 1)
+            val updatedBank = Bank().apply {
+                this.accountNumber = "AC-91923"
+                this.trust = 1.0
+                this.transactionFee = 1
+            }
             // when
             val performPatchRequest = mockMvc.patch(baseUrl){
                 contentType = APPLICATION_JSON
@@ -156,7 +169,11 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should return BAD REQUEST if no bank with given account number exists`() {
             // given
-            val invalidBank = Bank("does_not_exist", 1.0, 1)
+            val invalidBank = Bank().apply {
+                this.accountNumber = "does_not_exist"
+                this.trust = 1.0
+                this.transactionFee = 1
+            }
             
             // when
             val performPatchRequest = mockMvc.patch(baseUrl) {

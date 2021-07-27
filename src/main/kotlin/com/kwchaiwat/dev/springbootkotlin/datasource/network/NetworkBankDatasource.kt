@@ -2,22 +2,15 @@ package com.kwchaiwat.dev.springbootkotlin.datasource.network
 
 import com.kwchaiwat.dev.springbootkotlin.datasource.BankDatasource
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
+import com.kwchaiwat.dev.springbootkotlin.repository.BankRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.sql.ResultSet
 
 @Repository("network")
 class NetworkBankDatasource(
-    @Autowired private val jdbcTemplate: JdbcTemplate
+    @Autowired private val bankRepository: BankRepository
 ): BankDatasource {
-
-    var rowMapper: RowMapper<Bank> = RowMapper<Bank> { resultSet: ResultSet, _: Int ->
-        Bank(resultSet.getString("account_number"), resultSet.getDouble("trust"), resultSet.getInt("transaction_fee"))
-    }
-
-    val banks: MutableList<Bank> = jdbcTemplate.query("SELECT * FROM banks", rowMapper)
+    val banks: MutableList<Bank> = bankRepository.findAll()
 
     override fun retrieveBanks(): Collection<Bank> = banks
 
@@ -31,7 +24,6 @@ class NetworkBankDatasource(
             throw IllegalArgumentException("Bank with account number ${bank.accountNumber} already exits.")
         }
         banks.add(bank)
-        jdbcTemplate.update("INSERT INTO banks (account_number, trust, transaction_fee) VALUES (?,?,?)", bank.accountNumber, bank.trust, bank.transactionFee)
         return bank
     }
 
@@ -42,7 +34,6 @@ class NetworkBankDatasource(
             remove(currentBank)
             add(bank)
         }
-        jdbcTemplate.update("UPDATE banks SET trust = ?, transaction_fee = ? WHERE account_number = ?", bank.trust, bank.transactionFee, bank.accountNumber)
         return bank
     }
 
@@ -50,7 +41,6 @@ class NetworkBankDatasource(
         val currentBank = banks.firstOrNull { it.accountNumber == accountNumber }
             ?: throw NoSuchElementException("Could not find a bank with account number $accountNumber")
         banks.remove(currentBank)
-        jdbcTemplate.update("DELETE FROM banks WHERE account_number LIKE ?", accountNumber)
     }
 
 }

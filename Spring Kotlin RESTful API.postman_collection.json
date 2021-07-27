@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"account_number\": \"AA-123211\",\n    \"trust\": 1922.33,\n    \"transaction_fee\": 30\n}",
+					"raw": "{\n    \"accountNumber\": \"AA-123211\",\n    \"trust\": 1922.33,\n    \"transactionFee\": 30\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -57,7 +57,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"account_number\": \"AA-123211\",\n    \"trust\": 333333,\n    \"transaction_fee\": 333\n}",
+					"raw": "{\n    \"accountNumber\": \"AA-123211\",\n    \"trust\": 333333,\n    \"transactionFee\": 333\n}",
 					"options": {
 						"raw": {
 							"language": "json"

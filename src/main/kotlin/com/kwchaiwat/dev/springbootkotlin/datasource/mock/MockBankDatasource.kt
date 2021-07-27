@@ -2,24 +2,21 @@ package com.kwchaiwat.dev.springbootkotlin.datasource.mock
 
 import com.kwchaiwat.dev.springbootkotlin.datasource.BankDatasource
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
+import com.kwchaiwat.dev.springbootkotlin.repository.BankRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository("mock")
-class MockBankDatasource : BankDatasource{
-
-    val banks = mutableListOf(
-        Bank("32132", 3.14, 11),
-
-        Bank("321", 0.33, 123),
-
-        Bank("323114", 1.22, 232)
-    )
+class MockBankDatasource(
+    @Autowired private val bankRepository: BankRepository
+) : BankDatasource{
+    val banks: MutableList<Bank> = bankRepository.findAll()
 
     override fun retrieveBanks(): Collection<Bank> = banks
 
     override fun retrieveBank(accountNumber: String): Bank {
-        val bank = banks.firstOrNull { it.accountNumber == accountNumber } ?: throw NoSuchElementException("Could not find a bank with account number $accountNumber")
-        return bank
+        return banks.firstOrNull { it.accountNumber == accountNumber }
+            ?: throw NoSuchElementException("Could not find a bank with account number $accountNumber")
     }
 
     override fun createBank(bank: Bank): Bank {
