@@ -1,5 +1,6 @@
 package com.kwchaiwat.dev.springbootkotlin.controller
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
 import org.junit.jupiter.api.DisplayName
@@ -8,10 +9,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.*
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,7 +57,7 @@ internal class BankControllerTest  @Autowired constructor(
                 .andExpect {
                     status {isOk()}
                     content { contentType(APPLICATION_JSON)}
-                    jsonPath("$.trust") { value(321.32) }
+                    jsonPath("$.trust") { value(312.22) }
                     jsonPath("$.transactionFee") { value(40) }
                 }
 
@@ -74,7 +77,7 @@ internal class BankControllerTest  @Autowired constructor(
 
         }
     }
-    
+
     @Nested
     @DisplayName("POST /api/banks")
     @TestInstance(PER_CLASS)
@@ -83,8 +86,8 @@ internal class BankControllerTest  @Autowired constructor(
         fun `should add the new bank`() {
             // given
             val newBank = Bank().apply {
-                this.accountNumber = "acc123"
-                this.trust = 31.415
+                this.accountNumber = "abc123"
+                this.trust = 31.41
                 this.transactionFee = 2
             }
 
@@ -101,19 +104,29 @@ internal class BankControllerTest  @Autowired constructor(
                     status { isCreated() }
                     content {
                         contentType(APPLICATION_JSON)
-                        json(objectMapper.writeValueAsString(newBank))
+                        jsonPath("$.accountNumber") { value("abc123") }
+                        jsonPath("$.trust") { value(31.41) }
+                        jsonPath("$.transactionFee") { value(2) }
                     }
                 }
 
             mockMvc.get("$baseUrl/${newBank.accountNumber}")
-                .andExpect { content { json(objectMapper.writeValueAsString(newBank)) } }
+                .andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(APPLICATION_JSON)
+                        jsonPath("$.accountNumber") { value("abc123") }
+                        jsonPath("$.trust") { value(31.41) }
+                        jsonPath("$.transactionFee") { value(2) }
+                    }
+                }
 
         }
         
         @Test
         fun `should return BAD REQUEST if bank with given account number already exists`() {
             // given
-            val invalidbank = Bank().apply {
+            val invalidBank = Bank().apply {
                 this.accountNumber = "AA-12311"
                 this.trust = 1922.33
                 this.transactionFee = 30
@@ -122,7 +135,7 @@ internal class BankControllerTest  @Autowired constructor(
             // when
             val performPost = mockMvc.post(baseUrl){
                 contentType = APPLICATION_JSON
-                content = objectMapper.writeValueAsString(invalidbank)
+                content = objectMapper.writeValueAsString(invalidBank)
             }
 
             // Then
@@ -142,8 +155,8 @@ internal class BankControllerTest  @Autowired constructor(
             // given
             val updatedBank = Bank().apply {
                 this.accountNumber = "AC-91923"
-                this.trust = 1.0
-                this.transactionFee = 1
+                this.trust = 9999.99
+                this.transactionFee = 99
             }
             // when
             val performPatchRequest = mockMvc.patch(baseUrl){
@@ -158,12 +171,18 @@ internal class BankControllerTest  @Autowired constructor(
                     status { isOk() }
                     content {
                         contentType(APPLICATION_JSON)
-                        json(objectMapper.writeValueAsString(updatedBank))
+                        jsonPath("$.accountNumber") { value("AC-91923") }
+                        jsonPath("$.trust") { value(9999.99) }
+                        jsonPath("$.transactionFee") { value(99) }
                     }
                 }
 
             mockMvc.get("$baseUrl/${updatedBank.accountNumber}")
-                .andExpect { content { json(objectMapper.writeValueAsString(updatedBank)) } }
+                .andExpect { content { contentType(APPLICATION_JSON)
+                    jsonPath("$.accountNumber") { value("AC-91923") }
+                    jsonPath("$.trust") { value(9999.99) }
+                    jsonPath("$.transactionFee") { value(99) }
+                } }
         }
         
         @Test
@@ -197,7 +216,7 @@ internal class BankControllerTest  @Autowired constructor(
         @Test
         fun `should delete the bank with the given account number`() {
             // given
-            val accountNumber = "AD-10292"
+            val accountNumber = "abc123"
 
             // when/ then
             mockMvc.delete("$baseUrl/$accountNumber")

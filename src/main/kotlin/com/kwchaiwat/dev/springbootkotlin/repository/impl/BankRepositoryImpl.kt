@@ -10,37 +10,34 @@ import org.springframework.stereotype.Repository
 class BankRepositoryImpl(
     @Autowired private val bankRepository: BankRepository
 ): Repositories {
-    val banks: MutableList<Bank> = bankRepository.findAll()
 
-    override fun retrieveBanks(): Collection<Bank> = banks
+    override fun retrieveBanks(): Collection<Bank> = bankRepository.findAll()
 
     override fun retrieveBank(accountNumber: String): Bank {
-        return banks.firstOrNull { it.accountNumber == accountNumber }
+        return bankRepository.findByAccountNumber(accountNumber)
             ?: throw NoSuchElementException("Could not find a bank with account number $accountNumber")
     }
 
     override fun createBank(bank: Bank): Bank {
-        if (banks.any{it.accountNumber == bank.accountNumber}) {
+        if (bankRepository.findAll().any{it.accountNumber == bank.accountNumber}) {
             throw IllegalArgumentException("Bank with account number ${bank.accountNumber} already exits.")
         }
-        banks.add(bank)
+        bankRepository.save(bank)
         return bank
     }
 
     override fun updateBank(bank: Bank): Bank {
-        val currentBank = banks.firstOrNull { it.accountNumber == bank.accountNumber }
+        val currentBank = bankRepository.findAll().firstOrNull { it.accountNumber == bank.accountNumber }
             ?: throw NoSuchElementException("Could not find a bank with account number ${bank.accountNumber}")
-        with(banks) {
-            remove(currentBank)
-            add(bank)
-        }
+        bankRepository.delete(currentBank)
+        bankRepository.save(bank)
         return bank
     }
 
     override fun removeBank(accountNumber: String) {
-        val currentBank = banks.firstOrNull { it.accountNumber == accountNumber }
+        val banks: Bank = bankRepository.findByAccountNumber(accountNumber)
             ?: throw NoSuchElementException("Could not find a bank with account number $accountNumber")
-        banks.remove(currentBank)
+        bankRepository.delete(banks)
     }
 
 }

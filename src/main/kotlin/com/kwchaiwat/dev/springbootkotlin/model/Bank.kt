@@ -4,7 +4,15 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.io.Serializable
 import javax.persistence.*
 
-interface BankRepository: JpaRepository<Bank, Long>
+interface BankRepository: JpaRepository<Bank, Long> {
+    /**
+     * Finds a bank by accountNumber.
+     *
+     * @param accountNumber The accountNumber of the Bank to find.
+     * @return The Bank with the given accountNumber.
+     */
+    fun findByAccountNumber(accountNumber: String?): Bank?
+}
 
 @Table(name = "banks")
 @Entity
