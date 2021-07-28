@@ -2,13 +2,14 @@ package com.kwchaiwat.dev.springbootkotlin.repository.impl
 
 import com.kwchaiwat.dev.springbootkotlin.model.Bank
 import com.kwchaiwat.dev.springbootkotlin.model.BankRepository
+import com.kwchaiwat.dev.springbootkotlin.repository.Repositories
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository("bank")
 class BankRepositoryImpl(
     @Autowired private val bankRepository: BankRepository
-): com.kwchaiwat.dev.springbootkotlin.repository.Repositories {
+): Repositories {
     val banks: MutableList<Bank> = bankRepository.findAll()
 
     override fun retrieveBanks(): Collection<Bank> = banks
